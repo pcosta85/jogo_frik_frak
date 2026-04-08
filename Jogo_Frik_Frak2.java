@@ -58,7 +58,7 @@ public class Jogo_Frik_Frak2 extends JPanel {
 
                     if (p.contem(e.getX(), e.getY())) {
 
-                        // 🔹 FASE 1 - COLOCAÇÃO
+                        //  FASE 1 - COLOCAÇÃO
                         if (faseColocacao) {
                             if (p.estaVazio()) {
 
@@ -77,7 +77,7 @@ public class Jogo_Frik_Frak2 extends JPanel {
                                 alternarJogador();
                             }
                         }
-                        // 🔹 FASE 2 - MOVIMENTO E TROCA
+                        //  FASE 2 - MOVIMENTO E TROCA
                         else {
                             if (selecionado == null) {
                                 if (p.ocupante == jogadorAtual) {
