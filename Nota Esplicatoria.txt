@@ -1,0 +1,68 @@
+O código em causa tem como objetivo a criação de um jogo de tabuleiro de nome Frik Frak, podendo ser jogado por dois jogadores (Preto e Branco)
+a regra em si faz-se de cada jogador tem três peças que por sua vez deverá colocar de forma a completar a sua jogada, tanto na vertical, horizontal ou na diagonal.
+
+Composição do codigo
+1 - Enum Jogador
+    enum Jogador { JOGADOR1, JOGADOR2 }
+    Define os dois jogadores - JOGADOR1 (Preto) e JOGADOR2 (Branco)
+
+2 - Classe PontoTabuleiro -
+    static class PontoTabuleiro {
+    int x, y;
+    Jogador ocupante;
+}
+
+Representa cada ponto no tabuleiro:
+x, y: coordenadas na tela.
+ocupante: jogador que possui a peça nesse ponto (null se vazio).
+Métodos importantes:
+contem(int mx, int my): verifica se um clique está dentro do ponto.
+estaVazio(): verifica se não há peça ocupando o ponto.
+
+3 - Variáveis principais do jogo
+    private final List<PontoTabuleiro> pontos = new ArrayList<>();
+    private int passo = 90;   // distância entre pontos
+    private final int deslocamentoY = 40;  // centraliza o tabuleiro
+    private Jogador jogadorAtual = Jogador.JOGADOR1;
+    private int pecasJ1 = 0, pecasJ2 = 0;
+    private boolean faseColocacao = true;
+    private boolean faseTroca = false;
+    private PontoTabuleiro selecionado = null;
+
+pontos: lista de todos os pontos do tabuleiro.
+passo: distância entre pontos no tabuleiro.
+faseColocacao e faseTroca: controlam a fase do jogo.
+selecionado: armazena peça selecionada para movimento.
+
+4 - Construtor Jogo_Frik_Frak2()
+Define cor de fundo.
+Detecta redimensionamento da janela para recalcular posições do tabuleiro.
+Cria os pontos do tabuleiro.
+Adiciona listener de mouse para cliques, controlando as ações de cada fase:
+    - Colocação: colocar peças no tabuleiro.
+    - Movimento/Troca: mover peças selecionadas para pontos adjacentes vazios.
+
+5 - Métodos de lógica
+- alternarJogador(): alterna entre os jogadores após cada jogada.
+- criarPontos(): cria os pontos do tabuleiro em uma disposição geométrica central.
+- ehVizinho(PontoTabuleiro a, PontoTabuleiro b): verifica se dois pontos são adjacentes.
+- verificarVitoria(PontoTabuleiro p): verifica se o jogador formou uma linha de 3 peças (horizontal, vertical ou diagonal). Exibe uma JOptionPane e reseta o jogo.
+- contar(PontoTabuleiro p, int dx, int dy): conta peças consecutivas em determinada direção.
+- resetar(): reinicia o jogo, limpando o tabuleiro e resetando variáveis.
+
+6 - Renderização
+@Override
+protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    ...
+}
+
+- Desenha o tabuleiro e as linhas.
+- Desenha os pontos do tabuleiro e as peças dos jogadores.
+- Indica a peça selecionada com um círculo vermelho.
+- Exibe informações de turno e fase do jogo.
+
+7 - Método main
+- Cria a janela (JFrame) do jogo.
+- Adiciona o painel do jogo e um botão “Reset”.
+- Define tamanho, operação de fechamento e visibilidade.
