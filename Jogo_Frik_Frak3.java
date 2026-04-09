@@ -107,7 +107,7 @@ public class Jogo_Frik_Frak3 extends JPanel {
         jogadorAtual = (jogadorAtual == Jogador.JOGADOR1) ? Jogador.JOGADOR2 : Jogador.JOGADOR1;
     }
 
-    // 🔹 Criar pontos + ligações reais (GRAFO)
+    //  Criar pontos + ligações reais (GRAFO)
     private void criarPontos() {
         int cx = getWidth() / 2;
         int cy = getHeight() / 2 + deslocamentoY;
@@ -152,7 +152,7 @@ public class Jogo_Frik_Frak3 extends JPanel {
         b.vizinhos.add(a);
     }
 
-    // 🔹 Agora usa grafo (100% correto)
+    //  Uso grafo para validar movimentos e vitórias
     private boolean ehVizinho(PontoTabuleiro a, PontoTabuleiro b) {
         return a.vizinhos.contains(b);
     }
@@ -215,8 +215,8 @@ public class Jogo_Frik_Frak3 extends JPanel {
         g2.setStroke(new BasicStroke(3));
         g2.setColor(Color.BLACK);
 
-        // quadrado arredondado
-        // desenhar ligações reais entre pontos (igual à imagem)
+        // formato do tabuleiro
+        
         g2.setStroke(new BasicStroke(3));
         g2.setColor(Color.BLACK);
 
