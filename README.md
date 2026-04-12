@@ -134,7 +134,7 @@ private void jogadaComputador()
 
 ---
 
-##  Reset do Jogo
+Reset do Jogo
 
 Botão "Reset" reinicia:
 
