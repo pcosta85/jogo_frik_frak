@@ -124,8 +124,8 @@ Verifica 4 direções:
 
 O jogo inclui uma IA simples:
 
-Na fase de colocação → coloca na primeira posição livre
-Na fase de movimento → move a primeira peça possível
+Na fase de colocação - coloca na primeira posição livre
+Na fase de movimento - move a primeira peça possível
 
 Método principal:
 
