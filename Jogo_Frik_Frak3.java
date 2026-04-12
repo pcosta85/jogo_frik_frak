@@ -1,12 +1,13 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.*;
 
 public class Jogo_Frik_Frak3 extends JPanel {
 
     enum Jogador { JOGADOR1, JOGADOR2 }
+    enum ModoJogo { PVP, PVC }
 
     static class PontoTabuleiro {
         int x, y;
@@ -36,6 +37,8 @@ public class Jogo_Frik_Frak3 extends JPanel {
 
     private boolean faseColocacao = true;
     private PontoTabuleiro selecionado = null;
+
+    private ModoJogo modo = ModoJogo.PVP;
 
     public Jogo_Frik_Frak3() {
         setBackground(new Color(230, 230, 230));
@@ -96,6 +99,12 @@ public class Jogo_Frik_Frak3 extends JPanel {
                             }
                         }
                         repaint();
+
+                        // 🤖 Jogada do computador
+                        if (modo == ModoJogo.PVC && jogadorAtual == Jogador.JOGADOR2) {
+                            SwingUtilities.invokeLater(() -> jogadaComputador());
+                        }
+
                         break;
                     }
                 }
@@ -107,7 +116,54 @@ public class Jogo_Frik_Frak3 extends JPanel {
         jogadorAtual = (jogadorAtual == Jogador.JOGADOR1) ? Jogador.JOGADOR2 : Jogador.JOGADOR1;
     }
 
-    //  Criar pontos + ligações reais (GRAFO)
+    // 🤖 IA SIMPLES
+    private void jogadaComputador() {
+
+        if (jogadorAtual != Jogador.JOGADOR2) return;
+
+        // FASE 1
+        if (faseColocacao) {
+            for (PontoTabuleiro p : pontos) {
+                if (p.estaVazio()) {
+
+                    p.ocupante = Jogador.JOGADOR2;
+                    pecasJ2++;
+
+                    if (verificarVitoria(p)) return;
+
+                    if (pecasJ1 == 3 && pecasJ2 == 3)
+                        faseColocacao = false;
+
+                    alternarJogador();
+                    repaint();
+                    return;
+                }
+            }
+        }
+
+        // FASE 2
+        else {
+            for (PontoTabuleiro origem : pontos) {
+                if (origem.ocupante == Jogador.JOGADOR2) {
+
+                    for (PontoTabuleiro destino : origem.vizinhos) {
+                        if (destino.estaVazio()) {
+
+                            destino.ocupante = origem.ocupante;
+                            origem.ocupante = null;
+
+                            if (verificarVitoria(destino)) return;
+
+                            alternarJogador();
+                            repaint();
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void criarPontos() {
         int cx = getWidth() / 2;
         int cy = getHeight() / 2 + deslocamentoY;
@@ -119,7 +175,6 @@ public class Jogo_Frik_Frak3 extends JPanel {
 
         PontoTabuleiro[][] grid = new PontoTabuleiro[3][3];
 
-        // criar pontos
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 grid[i][j] = new PontoTabuleiro(
@@ -130,7 +185,6 @@ public class Jogo_Frik_Frak3 extends JPanel {
             }
         }
 
-        // ligações horizontais e verticais
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
 
@@ -139,10 +193,8 @@ public class Jogo_Frik_Frak3 extends JPanel {
             }
         }
 
-        // diagonais (como na imagem)
         conectar(grid[0][0], grid[1][1]);
         conectar(grid[1][1], grid[2][2]);
-
         conectar(grid[2][0], grid[1][1]);
         conectar(grid[1][1], grid[0][2]);
     }
@@ -152,7 +204,6 @@ public class Jogo_Frik_Frak3 extends JPanel {
         b.vizinhos.add(a);
     }
 
-    //  Uso grafo para validar movimentos e vitórias
     private boolean ehVizinho(PontoTabuleiro a, PontoTabuleiro b) {
         return a.vizinhos.contains(b);
     }
@@ -167,7 +218,7 @@ public class Jogo_Frik_Frak3 extends JPanel {
 
             if (count >= 3) {
                 JOptionPane.showMessageDialog(this,
-                        "Vitória: " + (p.ocupante == Jogador.JOGADOR1 ? "Jogador 1 (Preto)" : "Jogador 2 (Branco)"));
+                        "Vitória: " + (p.ocupante == Jogador.JOGADOR1 ? "Jogador 1 (Preto)" : "Computador/Branco"));
                 resetar();
                 return true;
             }
@@ -204,29 +255,12 @@ public class Jogo_Frik_Frak3 extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        int cx = getWidth() / 2;
-        int cy = getHeight() / 2 + deslocamentoY;
-        int tamanho = passo;
-
-        int x1 = cx - tamanho;
-        int y1 = cy - tamanho;
-        int largura = tamanho * 2;
-
-        g2.setStroke(new BasicStroke(3));
-        g2.setColor(Color.BLACK);
-
-        // formato do tabuleiro
-        
-        g2.setStroke(new BasicStroke(3));
-        g2.setColor(Color.BLACK);
-
         for (PontoTabuleiro p : pontos) {
             for (PontoTabuleiro viz : p.vizinhos) {
                 g2.drawLine(p.x, p.y, viz.x, viz.y);
             }
         }
 
-        // pontos e peças
         for (PontoTabuleiro p : pontos) {
             g2.setColor(Color.BLACK);
             g2.fillOval(p.x - 6, p.y - 6, 12, 12);
@@ -251,14 +285,31 @@ public class Jogo_Frik_Frak3 extends JPanel {
 
         g2.setFont(new Font("Arial", Font.BOLD, 16));
         g2.drawString("Vez: " + (jogadorAtual == Jogador.JOGADOR1 ? "Preto" : "Branco"), 20, 30);
-        String fase = faseColocacao ? "Colocação" : "Movimento";
-        g2.drawString("Fase: " + fase, 20, 50);
+        g2.drawString("Modo: " + (modo == ModoJogo.PVP ? "2 Jogadores" : "Vs Computador"), 20, 50);
+        g2.drawString("Fase: " + (faseColocacao ? "Colocação" : "Movimento"), 20, 70);
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
+
+            String[] opcoes = {"2 Jogadores", "Vs Computador"};
+            int escolha = JOptionPane.showOptionDialog(
+                    null,
+                    "Escolha o modo de jogo:",
+                    "Modo de Jogo",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opcoes,
+                    opcoes[0]
+            );
+
             JFrame f = new JFrame("Frik Frak");
             Jogo_Frik_Frak3 jogo = new Jogo_Frik_Frak3();
+
+            if (escolha == 1) {
+                jogo.modo = ModoJogo.PVC;
+            }
 
             JButton reset = new JButton("Reset");
             reset.addActionListener(e -> jogo.resetar());
