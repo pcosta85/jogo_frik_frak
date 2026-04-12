@@ -8,9 +8,9 @@ O jogo é baseado num tabuleiro 3x3 com ligações entre pontos (modelo em grafo
 
 ---
 
-O jogo suporta dois modos:
-- Jogador vs Jogador
-- Jogador vs Computador
+o jogo suporta dois modos:
+-  Jogador vs Jogador
+-  Jogador vs Computador
   
 ---
 
@@ -27,14 +27,14 @@ O jogo suporta dois modos:
 
 ##  Funcionalidades
 
-- Tabuleiro dinâmico 
-- Fase de colocação de peças
-- Fase de movimento entre pontos vizinhos
-- Verificação automática de vitória
-- Destaque da peça selecionada
-- Botão de reset do jogo
-- Escolha do modo de jogo (PVP ou PVC)
-- Jogada automática do computador
+  - Tabuleiro dinâmico 
+  - Fase de colocação de peças
+  - Fase de movimento entre pontos vizinhos
+  - Verificação automática de vitória
+  - Destaque da peça selecionada
+  - Botão de reset do jogo
+  - Escolha do modo de jogo (PVP ou PVC)
+  - Jogada automática do computador
 
 ---
 
@@ -74,3 +74,109 @@ O jogo suporta dois modos:
 
 ```bash
 javac Jogo_Frik_Frak3.java
+```
+
+### 2. Executar
+
+```bash
+java Jogo_Frik_Frak3
+```
+
+---
+
+##  Estrutura do Código
+
+### Classe principal
+
+- `Jogo_Frik_Frak3` - painel principal do jogo
+
+### Classes internas
+
+- `PontoTabuleiro` - representa cada ponto do tabuleiro
+- `Jogador` - enumeração dos jogadores
+- `ModoJogo` - define o tipo de jogo (PVP ou PVC)
+---
+
+##  Lógica Importante
+
+###  Grafo de ligações
+
+Cada ponto tem uma lista de vizinhos:
+
+```java
+List<PontoTabuleiro> vizinhos
+```
+
+---
+
+###  Verificação de vitória
+
+Verifica 4 direções:
+
+```java
+{1,0}  // horizontal
+{0,1}  // vertical
+{1,1}  // diagonal
+{1,-1} // diagonal inversa
+```
+
+### Inteligência Artificial (Computador)
+
+O jogo inclui uma IA simples:
+
+Na fase de colocação - coloca na primeira posição livre
+Na fase de movimento - move a primeira peça possível
+
+## Método principal:
+
+```java
+private void jogadaComputador()
+```
+---
+
+##  Reset do Jogo
+
+Botão "Reset" reinicia:
+
+- Tabuleiro
+- Jogadores
+- Fase do jogo
+- Modo mantém-se
+
+---
+
+##  Interface
+
+- Peças pretas - Jogador 1
+- Peças brancas - Jogador 2
+- Seleção - círculo vermelho
+- Linhas - conexões do grafo
+- Informação no ecrã:
+    - Vez do jogador
+    - Modo de jogo
+    - Fase atual
+
+---
+
+## Possíveis Melhorias
+
+  - Sons ao jogar
+  - Melhorar design gráfico
+  - Sistema de pontuação
+  - Níveis de dificuldade
+  - IA mais inteligente
+
+---
+
+##  Licença
+
+Uso educacional 
+
+---
+
+##  Autor
+
+Paulo Costa,<br>
+Curso Engenharia Informática,<br>
+2ºAno,<br>
+Conceção e Análise de Algoritmos
