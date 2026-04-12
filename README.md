@@ -8,6 +8,12 @@ O jogo é baseado num tabuleiro 3x3 com ligações entre pontos (modelo em grafo
 
 ---
 
+o jogo suporta dois modos:
+-  Jogador vs Jogador
+-  Jogador vs Computador
+  
+---
+
 ##  Conceitos Utilizados
 
 - Conceção e Análise de Algoritmos (CAA)
@@ -15,6 +21,7 @@ O jogo é baseado num tabuleiro 3x3 com ligações entre pontos (modelo em grafo
 - Estrutura de dados 
 - Eventos de rato 
 - Lógica de jogo por fases
+- Noções básicas de Inteligência Artificial
 
 ---
 
@@ -26,6 +33,8 @@ O jogo é baseado num tabuleiro 3x3 com ligações entre pontos (modelo em grafo
   - Verificação automática de vitória
   - Destaque da peça selecionada
   - Botão de reset do jogo
+  - Escolha do modo de jogo (PVP ou PVC)
+  - Jogada automática do computador
 
 ---
 
@@ -85,7 +94,7 @@ java Jogo_Frik_Frak3
 
 - `PontoTabuleiro` - representa cada ponto do tabuleiro
 - `Jogador` - enumeração dos jogadores
-
+- `ModoJogo` - define o tipo de jogo (PVP ou PVC)
 ---
 
 ##  Lógica Importante
@@ -111,6 +120,18 @@ Verifica 4 direções:
 {1,-1} // diagonal inversa
 ```
 
+### Inteligência Artificial (Computador)
+
+O jogo inclui uma IA simples:
+
+Na fase de colocação → coloca na primeira posição livre
+Na fase de movimento → move a primeira peça possível
+
+Método principal:
+
+```java
+private void jogadaComputador()
+
 ---
 
 ##  Reset do Jogo
@@ -120,6 +141,7 @@ Botão "Reset" reinicia:
 - Tabuleiro
 - Jogadores
 - Fase do jogo
+- Modo mantém-se
 
 ---
 
@@ -129,6 +151,10 @@ Botão "Reset" reinicia:
 - Peças brancas - Jogador 2
 - Seleção - círculo vermelho
 - Linhas - conexões do grafo
+- Informação no ecrã:
+    - Vez do jogador
+    - Modo de jogo
+    - Fase atual
 
 ---
 
@@ -137,6 +163,8 @@ Botão "Reset" reinicia:
   - Sons ao jogar
   - Melhorar design gráfico
   - Sistema de pontuação
+  - Níveis de dificuldade
+  - IA mais inteligente
 
 ---
 
